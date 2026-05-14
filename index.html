@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Types of Economic Systems — ECO 101</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --navy:   #0d1b2a;
+    --gold:   #b8882a;
+    --gold-lt:#e2b95a;
+    --cream:  #faf8f3;
+    --warm:   #f3ede0;
+    --muted:  #8a8070;
+    --slate:  #3d4a5c;
+    --white:  #ffffff;
+    --shadow: 0 8px 40px rgba(13,27,42,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #1a1a1a;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── STAGE ── */
+  #stage {
+    position: relative;
+    width: min(95vw, calc(95vh * 16 / 9));
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 6px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+  }
+
+  /* ── SLIDE BASE ── */
+  .slide {
+    position: absolute; inset: 0;
+    background: var(--cream);
+    display: flex; flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    transform: translateX(60px);
+  }
+  .slide.active {
+    opacity: 1; pointer-events: all; transform: translateX(0);
+  }
+  .slide.exit {
+    opacity: 0; transform: translateX(-60px);
+  }
+
+  /* ── COMMON LAYOUT HELPERS ── */
+  .slide-inner {
+    flex: 1; display: flex; flex-direction: column;
+    padding: 4.5% 5.5%;
+  }
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(8px, 1.1vw, 13px);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1em;
+  }
+  h1 { font-family: 'Cormorant Garamond', serif; font-weight: 600; color: var(--navy); line-height: 1.1; }
+  h2 { font-family: 'Cormorant Garamond', serif; font-weight: 600; color: var(--navy); line-height: 1.2; }
+  h3 { font-family: 'DM Sans', sans-serif; font-weight: 600; color: var(--navy); }
+  p, li { color: var(--slate); line-height: 1.6; }
+
+  /* ── DECORATIVE LINE ── */
+  .deco-line {
+    width: 48px; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-lt));
+    border-radius: 2px; margin-bottom: 1.4em;
+  }
+
+  /* ── FOOTER BAR ── */
+  .slide-footer {
+    height: 7%;
+    background: var(--navy);
+    display: flex; align-items: center;
+    padding: 0 5.5%;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .slide-footer span {
+    font-size: clamp(7px, 0.9vw, 11px);
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.06em;
+  }
+  .slide-footer .course {
+    color: var(--gold-lt); font-weight: 500;
+  }
+
+  /* ═══════════════════════════════════════
+     SLIDE 1 — TITLE
+  ═══════════════════════════════════════ */
+  #s1 { background: var(--navy); }
+  #s1 .slide-inner {
+    justify-content: center; align-items: flex-start;
+    padding-left: 8%;
+  }
+  #s1 .tag { color: var(--gold-lt); }
+  #s1 h1 {
+    font-size: clamp(28px, 5.2vw, 64px);
+    color: var(--white);
+    max-width: 60%;
+    margin-bottom: 0.5em;
+  }
+  #s1 h1 em { color: var(--gold-lt); font-style: normal; }
+  #s1 .subtitle {
+    font-size: clamp(10px, 1.4vw, 17px);
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 2.4em;
+    max-width: 52%;
+  }
+  .presenter-card {
+    display: flex; gap: 2em;
+  }
+  .p-block {
+    display: flex; flex-direction: column; gap: 0.25em;
+  }
+  .p-block .label {
+    font-size: clamp(6px, 0.75vw, 9px);
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold);
+  }
+  .p-block .value {
+    font-size: clamp(9px, 1.05vw, 13px);
+    color: rgba(255,255,255,0.8);
+    font-weight: 500;
+  }
+  .divider-v { width: 1px; background: rgba(255,255,255,0.12); margin: 0 0.5em; }
+
+  /* BG decoration */
+  #s1 .bg-circle {
+    position: absolute;
+    right: -4%; top: -10%;
+    width: 52%; aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,136,42,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  #s1 .bg-grid {
+    position: absolute; right: 4%; top: 0; bottom: 0;
+    width: 38%;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+  }
+  #s1 .slide-footer { background: rgba(255,255,255,0.06); border-top: 1px solid rgba(255,255,255,0.08); }
+  #s1 .slide-footer span { color: rgba(255,255,255,0.35); }
+
+  /* ═══════════════════════════════════════
+     SLIDE 2 — TRADITIONAL
+  ═══════════════════════════════════════ */
+  #s2 .slide-inner { flex-direction: row; gap: 5%; align-items: stretch; }
+  .trad-left { flex: 1.1; display: flex; flex-direction: column; justify-content: center; }
+  .trad-right { flex: 0.9; display: flex; flex-direction: column; gap: 3%; justify-content: center; }
+
+  #s2 h2 { font-size: clamp(20px, 3.4vw, 42px); margin-bottom: 0.6em; }
+
+  .key-points { list-style: none; display: flex; flex-direction: column; gap: 0.7em; }
+  .key-points li {
+    display: flex; align-items: flex-start; gap: 0.6em;
+    font-size: clamp(8px, 1.1vw, 13.5px);
+  }
+  .key-points li::before {
+    content: '◆';
+    color: var(--gold); font-size: 0.6em; margin-top: 0.3em; flex-shrink: 0;
+  }
+
+  /* Barter icon cards */
+  .icon-cards { display: flex; flex-direction: column; gap: 4%; }
+  .icon-card {
+    background: var(--white);
+    border: 1px solid rgba(184,136,42,0.2);
+    border-radius: 8px;
+    padding: 4% 5%;
+    display: flex; align-items: center; gap: 0.8em;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+  }
+  .icon-card:hover { transform: translateX(4px); }
+  .icon-card .ico { font-size: clamp(16px, 2.2vw, 28px); }
+  .icon-card .ico-text { flex: 1; }
+  .ico-text strong { display: block; font-size: clamp(8px, 0.95vw, 11px); color: var(--navy); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .ico-text span { font-size: clamp(7px, 0.85vw, 10px); color: var(--muted); }
+
+  /* ═══════════════════════════════════════
+     SLIDE 3 — COMMAND
+  ═══════════════════════════════════════ */
+  #s3 .slide-inner { gap: 3%; }
+  #s3 h2 { font-size: clamp(20px, 3.4vw, 42px); margin-bottom: 0.5em; }
+  .cmd-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3%;
+  }
+  .cmd-card {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 5% 5%;
+    display: flex; flex-direction: column;
+    align-items: center; text-align: center;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    border-top: 3px solid var(--gold);
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .cmd-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,0.1); }
+  .cmd-card .c-icon { font-size: clamp(18px, 2.8vw, 36px); margin-bottom: 0.4em; }
+  .cmd-card h3 { font-size: clamp(9px, 1.1vw, 13px); margin-bottom: 0.4em; color: var(--navy); }
+  .cmd-card p { font-size: clamp(7px, 0.9vw, 11px); color: var(--muted); }
+
+  /* State control bar */
+  .state-bar-wrap {
+    background: var(--navy);
+    border-radius: 10px;
+    padding: 4% 5%;
+    display: flex; align-items: center; gap: 4%;
+    color: white;
+  }
+  .state-bar-wrap .sb-label {
+    font-size: clamp(7px, 0.85vw, 10px);
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+  .bar-track {
+    flex: 1; height: 8px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 4px; overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-lt));
+    border-radius: 4px;
+    animation: barGrow 1.4s ease forwards;
+  }
+  @keyframes barGrow { from { width: 0; } }
+  .bar-pct { font-size: clamp(8px, 1vw, 12px); color: var(--gold-lt); font-weight: 600; white-space: nowrap; }
+
+  /* ═══════════════════════════════════════
+     SLIDE 4 — MARKET
+  ═══════════════════════════════════════ */
+  #s4 .slide-inner { flex-direction: row; gap: 5%; }
+  .mkt-left { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .mkt-right { flex: 1.1; display: flex; flex-direction: column; justify-content: center; gap: 4%; }
+
+  #s4 h2 { font-size: clamp(20px, 3.4vw, 42px); margin-bottom: 0.6em; }
+
+  .sd-chart-wrap {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 5%;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    position: relative;
+  }
+  .sd-chart-wrap h3 {
+    font-size: clamp(8px, 0.9vw, 11px);
+    text-align: center; color: var(--muted);
+    margin-bottom: 4%;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  canvas#sdChart { width: 100% !important; height: auto !important; }
+
+  .mkt-pill-row {
+    display: flex; gap: 3%;
+  }
+  .mkt-pill {
+    flex: 1;
+    background: var(--white);
+    border-radius: 8px;
+    padding: 4% 4%;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    border-bottom: 3px solid var(--gold);
+  }
+  .mkt-pill .p-icon { font-size: clamp(14px, 2vw, 26px); }
+  .mkt-pill strong { display: block; font-size: clamp(7px, 0.85vw, 10px); color: var(--navy); margin-top: 0.3em; }
+
+  /* ═══════════════════════════════════════
+     SLIDE 5 — MIXED
+  ═══════════════════════════════════════ */
+  #s5 .slide-inner { gap: 2.5%; }
+  #s5 h2 { font-size: clamp(20px, 3.4vw, 42px); margin-bottom: 0.4em; }
+
+  .mixed-body { flex: 1; display: flex; gap: 4%; }
+  .mixed-left { flex: 1; display: flex; flex-direction: column; gap: 3%; justify-content: center; }
+  .mixed-right { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+  .mix-row {
+    display: flex; align-items: center; gap: 3%;
+    background: var(--white);
+    border-radius: 8px;
+    padding: 3% 4%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  .mix-row .m-label {
+    width: 28%;
+    font-size: clamp(7px, 0.9vw, 11px);
+    font-weight: 600; color: var(--navy);
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .mix-bar-track {
+    flex: 1; height: 8px;
+    background: #eee; border-radius: 4px; overflow: hidden;
+  }
+  .mix-bar-fill {
+    height: 100%; border-radius: 4px;
+    animation: barGrow 1.4s ease forwards;
+  }
+  .fill-market { background: linear-gradient(90deg, #3d7ebf, #6aa8e0); }
+  .fill-govt   { background: linear-gradient(90deg, var(--gold), var(--gold-lt)); }
+  .mix-row .m-pct {
+    font-size: clamp(7px, 0.9vw, 11px);
+    font-weight: 600; color: var(--navy); width: 14%; text-align: right;
+  }
+
+  /* Donut */
+  .donut-wrap { position: relative; width: 55%; aspect-ratio: 1; }
+  .donut-wrap svg { width: 100%; height: 100%; }
+  .donut-center {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .donut-center span:first-child {
+    font-size: clamp(18px, 3vw, 38px);
+    font-weight: 600; color: var(--navy); line-height: 1;
+  }
+  .donut-center span:last-child {
+    font-size: clamp(6px, 0.75vw, 9px);
+    color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .donut-legend {
+    display: flex; gap: 8%; margin-top: 6%;
+  }
+  .dl-item { display: flex; align-items: center; gap: 0.4em; font-size: clamp(6px, 0.8vw, 9px); color: var(--muted); }
+  .dl-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+  /* ═══════════════════════════════════════
+     SLIDE 6 — SUMMARY
+  ═══════════════════════════════════════ */
+  #s6 .slide-inner { gap: 3%; }
+  #s6 h2 { font-size: clamp(18px, 3vw, 38px); margin-bottom: 0.4em; }
+
+  .compare-table {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2.5%;
+    align-content: stretch;
+  }
+  .ct-col {
+    display: flex; flex-direction: column; gap: 5%;
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.06);
+    transition: transform 0.25s;
+  }
+  .ct-col:hover { transform: translateY(-4px); }
+  .ct-head {
+    padding: 5% 6% 4%;
+    text-align: center;
+  }
+  .ct-head .ct-icon { font-size: clamp(16px, 2.4vw, 30px); margin-bottom: 0.3em; }
+  .ct-head h3 { font-size: clamp(8px, 1.1vw, 13px); color: var(--white); }
+  .ct-head p { font-size: clamp(6px, 0.75vw, 9px); color: rgba(255,255,255,0.7); margin-top: 0.2em; }
+  .ct-body { padding: 4% 5%; flex: 1; display: flex; flex-direction: column; gap: 5%; }
+  .ct-row {
+    font-size: clamp(6.5px, 0.8vw, 10px);
+    color: var(--slate);
+    display: flex; flex-direction: column; gap: 0.2em;
+  }
+  .ct-row strong { font-size: clamp(6px, 0.72vw, 8.5px); color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .head-trad { background: linear-gradient(135deg, #6b7c5c, #8fa07a); }
+  .head-cmd  { background: linear-gradient(135deg, #7c5c5c, #a07a7a); }
+  .head-mkt  { background: linear-gradient(135deg, #3d6b8e, #5a96c7); }
+  .head-mix  { background: linear-gradient(135deg, #6b5c8e, #9a7ab0); }
+
+  /* ═══════════════════════════════════════
+     SLIDE 7 — THANK YOU
+  ═══════════════════════════════════════ */
+  #s7 { background: var(--navy); }
+  #s7 .slide-inner { align-items: center; justify-content: center; text-align: center; }
+  #s7 .tag { color: var(--gold-lt); }
+  #s7 h1 { font-size: clamp(28px, 6vw, 78px); color: var(--white); }
+  #s7 h1 em { color: var(--gold-lt); font-style: italic; }
+  #s7 .ty-sub { font-size: clamp(9px, 1.15vw, 14px); color: rgba(255,255,255,0.45); margin: 1em 0 2.5em; max-width: 42%; }
+  .ty-cards {
+    display: flex; gap: 2em; margin-top: 1em;
+  }
+  .ty-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 1.2em 2em;
+    display: flex; flex-direction: column; gap: 0.3em;
+    min-width: 160px;
+  }
+  .ty-card .tl { font-size: clamp(6px, 0.7vw, 8.5px); color: var(--gold); text-transform: uppercase; letter-spacing: 0.12em; }
+  .ty-card .tv { font-size: clamp(8px, 1vw, 12px); color: rgba(255,255,255,0.8); font-weight: 500; }
+  #s7 .bg-line {
+    position: absolute; left: 0; right: 0; top: 50%;
+    height: 1px; background: rgba(255,255,255,0.05);
+    pointer-events: none;
+  }
+  #s7 .slide-footer { background: rgba(255,255,255,0.04); border-top: 1px solid rgba(255,255,255,0.07); }
+  #s7 .slide-footer span { color: rgba(255,255,255,0.3); }
+
+  /* ── CONTROLS ── */
+  #controls {
+    margin-top: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .ctrl-btn {
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.08);
+    color: white; font-size: 16px; cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ctrl-btn:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.4); }
+  .ctrl-btn:disabled { opacity: 0.25; cursor: default; }
+  .slide-counter {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; color: rgba(255,255,255,0.5);
+    min-width: 60px; text-align: center;
+  }
+  .dots { display: flex; gap: 6px; }
+  .dot {
+    width: 6px; height: 6px; border-radius: 3px;
+    background: rgba(255,255,255,0.25);
+    cursor: pointer; transition: background 0.2s, width 0.3s;
+  }
+  .dot.active { background: #b8882a; width: 20px; }
+
+  /* ── ANIMATIONS ── */
+  .slide.active .anim-up {
+    animation: slideUp 0.55s ease backwards;
+  }
+  .anim-up:nth-child(1) { animation-delay: 0.05s; }
+  .anim-up:nth-child(2) { animation-delay: 0.12s; }
+  .anim-up:nth-child(3) { animation-delay: 0.19s; }
+  .anim-up:nth-child(4) { animation-delay: 0.26s; }
+  .anim-up:nth-child(5) { animation-delay: 0.33s; }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .slide.active .anim-left {
+    animation: slideLeft 0.55s ease backwards;
+  }
+  @keyframes slideLeft {
+    from { opacity: 0; transform: translateX(-22px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  .slide.active .anim-right {
+    animation: slideRight 0.55s ease backwards;
+  }
+  @keyframes slideRight {
+    from { opacity: 0; transform: translateX(22px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* fullscreen */
+  :fullscreen #controls { display: none; }
+  :fullscreen #stage { width: 100vw; aspect-ratio: 16/9; border-radius: 0; }
+
+  /* scale font for smaller screens */
+  @media (max-width: 700px) {
+    #controls { gap: 8px; }
+    .ctrl-btn { width: 32px; height: 32px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="stage">
+
+  <!-- ╔═══ SLIDE 1 — TITLE ═══╗ -->
+  <div class="slide active" id="s1">
+    <div class="bg-circle"></div>
+    <div class="bg-grid"></div>
+    <div class="slide-inner">
+      <div class="tag anim-up">ECO 101 &nbsp;·&nbsp; ZNRF University of Management Sciences</div>
+      <h1 class="anim-up">Types of<br><em>Economic</em><br>Systems</h1>
+      <p class="subtitle anim-up">An exploration of how societies allocate resources,<br>make production decisions, and organise their economies.</p>
+      <div class="presenter-card anim-up">
+        <div class="p-block">
+          <span class="label">Presented by</span>
+          <span class="value">Md. Sabbir Hosen</span>
+        </div>
+        <div class="divider-v"></div>
+        <div class="p-block">
+          <span class="label">Student ID</span>
+          <span class="value">093242510005</span>
+        </div>
+        <div class="divider-v"></div>
+        <div class="p-block">
+          <span class="label">Department</span>
+          <span class="value">CSE</span>
+        </div>
+        <div class="divider-v"></div>
+        <div class="p-block">
+          <span class="label">Supervised by</span>
+          <span class="value">Namira Khondaker, Lecturer</span>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span class="course">ZUMS &nbsp;·&nbsp; ECO 101</span>
+      <span>Based on "Basic Economics" — Thomas Sowell</span>
+    </div>
+  </div>
+
+  <!-- ╔═══ SLIDE 2 — TRADITIONAL ═══╗ -->
+  <div class="slide" id="s2">
+    <div class="slide-inner">
+      <div class="trad-left">
+        <div class="tag anim-up">01 / Traditional Economy</div>
+        <div class="deco-line anim-up"></div>
+        <h2 class="anim-up">Rooted in Custom<br>&amp; Tradition</h2>
+        <ul class="key-points" style="margin-top:1em">
+          <li class="anim-up">Decisions guided by long-standing customs and cultural beliefs</li>
+          <li class="anim-up">Occupations passed down through generations</li>
+          <li class="anim-up">Production mainly for self-consumption; simple technology</li>
+          <li class="anim-up">Trade through <strong>barter</strong> — goods exchanged without money</li>
+          <li class="anim-up">Change is slow; stability is the priority</li>
+        </ul>
+      </div>
+      <div class="trad-right anim-right">
+        <div class="icon-card">
+          <span class="ico">🌾</span>
+          <div class="ico-text">
+            <strong>Agriculture-Based</strong>
+            <span>Farming &amp; harvesting for community sustenance</span>
+          </div>
+        </div>
+        <div class="icon-card">
+          <span class="ico">🔄</span>
+          <div class="ico-text">
+            <strong>Barter System</strong>
+            <span>Exchange of goods — vegetables for tools</span>
+          </div>
+        </div>
+        <div class="icon-card">
+          <span class="ico">🏡</span>
+          <div class="ico-text">
+            <strong>Community Life</strong>
+            <span>Tribal communities in parts of Africa &amp; Asia</span>
+          </div>
+        </div>
+        <div class="icon-card">
+          <span class="ico">📜</span>
+          <div class="ico-text">
+            <strong>Inherited Roles</strong>
+            <span>Children follow parents' occupations</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span class="course">ZUMS &nbsp;·&nbsp; ECO 101</span>
+      <span>Types of Economic Systems</span>
+    </div>
+  </div>
+
+  <!-- ╔═══ SLIDE 3 — COMMAND ═══╗ -->
+  <div class="slide" id="s3">
+    <div class="slide-inner">
+      <div class="tag anim-up">02 / Command Economy</div>
+      <div class="deco-line anim-up"></div>
+      <h2 class="anim-up">State-Controlled Production</h2>
+
+      <div class="cmd-grid">
+        <div class="cmd-card anim-up">
+          <div class="c-icon">🏛️</div>
+          <h3>Centralised Planning</h3>
+          <p>The government decides what to produce, how much, and at what price</p>
+        </div>
+        <div class="cmd-card anim-up">
+          <div class="c-icon">🏭</div>
+          <h3>State Ownership</h3>
+          <p>Land, factories, and machines are owned and controlled by the state</p>
+        </div>
+        <div class="cmd-card anim-up">
+          <div class="c-icon">⚖️</div>
+          <h3>Equality Over Profit</h3>
+          <p>Goal is equitable distribution, not individual profit or market gain</p>
+        </div>
+        <div class="cmd-card anim-up">
+          <div class="c-icon">⚠️</div>
+          <h3>Information Gap</h3>
+          <p>No single authority can know everyone's needs — leads to inefficiency</p>
+        </div>
+        <div class="cmd-card anim-up">
+          <div class="c-icon">🚫</div>
+          <h3>Limited Freedom</h3>
+          <p>Private businesses and individuals have little economic autonomy</p>
+        </div>
+        <div class="cmd-card anim-up">
+          <div class="c-icon">🌍</div>
+          <h3>Examples</h3>
+          <p>Former Soviet Union &amp; North Korea</p>
+        </div>
+      </div>
+
+      <div class="state-bar-wrap anim-up" style="margin-top:3%">
+        <span class="sb-label">Govt. Control</span>
+        <div class="bar-track"><div class="bar-fill" style="width:92%"></div></div>
+        <span class="bar-pct">~92%</span>
+        <span class="sb-label" style="margin-left:4%">Market Freedom</span>
+        <div class="bar-track"><div class="bar-fill" style="width:8%"></div></div>
+        <span class="bar-pct">~8%</span>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span class="course">ZUMS &nbsp;·&nbsp; ECO 101</span>
+      <span>Types of Economic Systems</span>
+    </div>
+  </div>
+
+  <!-- ╔═══ SLIDE 4 — MARKET ═══╗ -->
+  <div class="slide" id="s4">
+    <div class="slide-inner">
+      <div class="mkt-left">
+        <div class="tag anim-up">03 / Market Economy</div>
+        <div class="deco-line anim-up"></div>
+        <h2 class="anim-up">Driven by Demand<br>&amp; Supply</h2>
+        <ul class="key-points" style="margin-top:1em">
+          <li class="anim-up">Individuals &amp; businesses make all major decisions</li>
+          <li class="anim-up">Prices determined by <strong>demand and supply</strong></li>
+          <li class="anim-up">Rising prices signal scarcity, motivating production</li>
+          <li class="anim-up"><strong>Profit</strong> is the primary motivator</li>
+          <li class="anim-up">Minimal government involvement</li>
+          <li class="anim-up">Example: <strong>United States</strong></li>
+        </ul>
+      </div>
+      <div class="mkt-right">
+        <div class="sd-chart-wrap anim-right">
+          <h3>Supply &amp; Demand — Price Equilibrium</h3>
+          <canvas id="sdChart" width="400" height="220"></canvas>
+        </div>
+        <div class="mkt-pill-row anim-up">
+          <div class="mkt-pill">
+            <div class="p-icon">📈</div>
+            <strong>Price Signals</strong>
+          </div>
+          <div class="mkt-pill">
+            <div class="p-icon">🏪</div>
+            <strong>Private Ownership</strong>
+          </div>
+          <div class="mkt-pill">
+            <div class="p-icon">💡</div>
+            <strong>Innovation</strong>
+          </div>
+          <div class="mkt-pill">
+            <div class="p-icon">🏆</div>
+            <strong>Competition</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span class="course">ZUMS &nbsp;·&nbsp; ECO 101</span>
+      <span>Types of Economic Systems</span>
+    </div>
+  </div>
+
+  <!-- ╔═══ SLIDE 5 — MIXED ═══╗ -->
+  <div class="slide" id="s5">
+    <div class="slide-inner">
+      <div class="tag anim-up">04 / Mixed Economy</div>
+      <div class="deco-line anim-up"></div>
+      <h2 class="anim-up">Best of Both Worlds</h2>
+      <div class="mixed-body">
+        <div class="mixed-left anim-left">
+          <div class="mix-row">
+            <span class="m-label">Market Forces</span>
+            <div class="mix-bar-track"><div class="mix-bar-fill fill-market" style="width:60%"></div></div>
+            <span class="m-pct">60%</span>
+          </div>
+          <div class="mix-row">
+            <span class="m-label">Govt. Role</span>
+            <div class="mix-bar-track"><div class="mix-bar-fill fill-govt" style="width:40%"></div></div>
+            <span class="m-pct">40%</span>
+          </div>
+          <ul class="key-points" style="margin-top:1em">
+            <li class="anim-up">Private businesses &amp; individuals drive the economy</li>
+            <li class="anim-up">Government provides roads, schools, hospitals</li>
+            <li class="anim-up">Taxes &amp; social welfare programs exist</li>
+            <li class="anim-up">Business regulation protects consumers</li>
+            <li class="anim-up">Examples: <strong>India &amp; United Kingdom</strong></li>
+          </ul>
+        </div>
+        <div class="mixed-right anim-right">
+          <div class="donut-wrap">
+            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+              <!-- background circle -->
+              <circle cx="60" cy="60" r="48" fill="none" stroke="#eee" stroke-width="14"/>
+              <!-- market slice ~60% = 0.6 * 301.59 ≈ 180.9 -->
+              <circle cx="60" cy="60" r="48" fill="none"
+                stroke="#5a96c7" stroke-width="14"
+                stroke-dasharray="180.9 301.6"
+                stroke-dashoffset="75.4"
+                style="transition: stroke-dasharray 1.2s ease;"/>
+              <!-- govt slice ~40% = 0.4 * 301.59 ≈ 120.6 -->
+              <circle cx="60" cy="60" r="48" fill="none"
+                stroke="#b8882a" stroke-width="14"
+                stroke-dasharray="120.6 301.6"
+                stroke-dashoffset="-105.5"
+                style="transition: stroke-dasharray 1.2s ease;"/>
+            </svg>
+            <div class="donut-center">
+              <span>Mixed</span>
+              <span>Economy</span>
+            </div>
+          </div>
+          <div class="donut-legend">
+            <div class="dl-item"><div class="dl-dot" style="background:#5a96c7"></div>Market Forces</div>
+            <div class="dl-item"><div class="dl-dot" style="background:#b8882a"></div>Government</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span class="course">ZUMS &nbsp;·&nbsp; ECO 101</span>
+      <span>Types of Economic Systems</span>
+    </div>
+  </div>
+
+  <!-- ╔═══ SLIDE 6 — SUMMARY ═══╗ -->
+  <div class="slide" id="s6">
+    <div class="slide-inner">
+      <div class="tag anim-up">Summary &nbsp;·&nbsp; Comparison</div>
+      <div class="deco-line anim-up"></div>
+      <h2 class="anim-up">Four Systems at a Glance</h2>
+      <div class="compare-table">
+
+        <div class="ct-col anim-up">
+          <div class="ct-head head-trad">
+            <div class="ct-icon">🌾</div>
+            <h3>Traditional</h3>
+            <p>Customs &amp; Culture</p>
+          </div>
+          <div class="ct-body">
+            <div class="ct-row"><strong>Who Decides</strong>Customs &amp; traditions</div>
+            <div class="ct-row"><strong>Ownership</strong>Community / family</div>
+            <div class="ct-row"><strong>Motive</strong>Subsistence</div>
+            <div class="ct-row"><strong>Example</strong>Tribal communities</div>
+          </div>
+        </div>
+
+        <div class="ct-col anim-up">
+          <div class="ct-head head-cmd">
+            <div class="ct-icon">🏛️</div>
+            <h3>Command</h3>
+            <p>Centralised Control</p>
+          </div>
+          <div class="ct-body">
+            <div class="ct-row"><strong>Who Decides</strong>The Government</div>
+            <div class="ct-row"><strong>Ownership</strong>State-owned</div>
+            <div class="ct-row"><strong>Motive</strong>Equality &amp; control</div>
+            <div class="ct-row"><strong>Example</strong>Soviet Union, N. Korea</div>
+          </div>
+        </div>
+
+        <div class="ct-col anim-up">
+          <div class="ct-head head-mkt">
+            <div class="ct-icon">📈</div>
+            <h3>Market</h3>
+            <p>Demand &amp; Supply</p>
+          </div>
+          <div class="ct-body">
+            <div class="ct-row"><strong>Who Decides</strong>Individuals &amp; firms</div>
+            <div class="ct-row"><strong>Ownership</strong>Private</div>
+            <div class="ct-row"><strong>Motive</strong>Profit</div>
+            <div class="ct-row"><strong>Example</strong>United States</div>
+          </div>
+        </div>
+
+        <div class="ct-col anim-up">
+          <div class="ct-head head-mix">
+            <div class="ct-icon">⚖️</div>
+            <h3>Mixed</h3>
+            <p>Market + Government</p>
+          </div>
+          <div class="ct-body">
+            <div class="ct-row"><strong>Who Decides</strong>Both market &amp; govt.</div>
+            <div class="ct-row"><strong>Ownership</strong>Private + public</div>
+            <div class="ct-row"><strong>Motive</strong>Efficiency &amp; welfare</div>
+            <div class="ct-row"><strong>Example</strong>India, UK</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span class="course">ZUMS &nbsp;·&nbsp; ECO 101</span>
+      <span>Types of Economic Systems</span>
+    </div>
+  </div>
+
+  <!-- ╔═══ SLIDE 7 — THANK YOU ═══╗ -->
+  <div class="slide" id="s7">
+    <div class="bg-line"></div>
+    <div class="slide-inner">
+      <div class="tag anim-up">ECO 101 &nbsp;·&nbsp; ZUMS</div>
+      <h1 class="anim-up">Thank <em>You</em></h1>
+      <p class="ty-sub anim-up">Open to questions, feedback, and discussion from the audience and course lecturer.</p>
+      <div class="ty-cards anim-up">
+        <div class="ty-card">
+          <span class="tl">Presenter</span>
+          <span class="tv">Md. Sabbir Hosen</span>
+        </div>
+        <div class="ty-card">
+          <span class="tl">Student ID</span>
+          <span class="tv">093242510005</span>
+        </div>
+        <div class="ty-card">
+          <span class="tl">Department</span>
+          <span class="tv">CSE</span>
+        </div>
+        <div class="ty-card">
+          <span class="tl">Course Lecturer</span>
+          <span class="tv">Namira Khondaker</span>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span class="course">ZUMS &nbsp;·&nbsp; ECO 101</span>
+      <span>Based on "Basic Economics" — Thomas Sowell</span>
+    </div>
+  </div>
+
+</div><!-- #stage -->
+
+<!-- CONTROLS -->
+<div id="controls">
+  <button class="ctrl-btn" id="prevBtn" onclick="changeSlide(-1)" disabled>&#8592;</button>
+  <div class="dots" id="dots"></div>
+  <span class="slide-counter" id="counter">1 / 7</span>
+  <button class="ctrl-btn" id="nextBtn" onclick="changeSlide(1)">&#8594;</button>
+  <button class="ctrl-btn" id="fsBtn" onclick="toggleFS()" title="Fullscreen">&#9974;</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total  = slides.length;
+  let   cur    = 0;
+
+  // Build dots
+  const dotsEl = document.getElementById('dots');
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(idx) {
+    slides[cur].classList.remove('active');
+    slides[cur].classList.add('exit');
+    setTimeout(() => slides[cur < idx ? cur : idx + (cur - idx > 0 ? 0 : 0)].classList.remove('exit'), 600);
+
+    const prev = cur;
+    cur = idx;
+
+    slides[prev].classList.remove('active');
+    setTimeout(() => slides[prev].classList.remove('exit'), 600);
+    slides[prev].classList.add('exit');
+    slides[cur].classList.add('active');
+
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+    document.getElementById('counter').textContent = `${cur + 1} / ${total}`;
+    document.getElementById('prevBtn').disabled = cur === 0;
+    document.getElementById('nextBtn').disabled = cur === total - 1;
+
+    // redraw chart if going to slide 4
+    if (cur === 3) setTimeout(drawSD, 300);
+  }
+
+  function changeSlide(dir) {
+    const next = cur + dir;
+    if (next < 0 || next >= total) return;
+    goTo(next);
+  }
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') changeSlide(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   changeSlide(-1);
+    if (e.key === 'f' || e.key === 'F') toggleFS();
+  });
+
+  // Fullscreen
+  function toggleFS() {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+
+  // ── Supply & Demand Chart ──
+  function drawSD() {
+    const canvas = document.getElementById('sdChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+
+    const pad = { l: 34, r: 20, t: 10, b: 30 };
+    const cw  = W - pad.l - pad.r;
+    const ch  = H - pad.t - pad.b;
+
+    // Axes
+    ctx.strokeStyle = '#ddd'; ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, pad.t + ch);
+    ctx.lineTo(pad.l + cw, pad.t + ch);
+    ctx.stroke();
+
+    // Axis labels
+    ctx.fillStyle = '#8a8070'; ctx.font = '9px DM Sans, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('Quantity', pad.l + cw / 2, H - 4);
+    ctx.save(); ctx.translate(10, pad.t + ch / 2); ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Price', 0, 0); ctx.restore();
+
+    // Demand curve (downward)
+    const demand = [
+      [0, 1], [0.15, 0.82], [0.3, 0.65], [0.45, 0.5],
+      [0.6, 0.37], [0.75, 0.26], [0.9, 0.18], [1, 0.12]
+    ];
+    // Supply curve (upward)
+    const supply = [
+      [0, 0.08], [0.15, 0.16], [0.3, 0.27], [0.45, 0.4],
+      [0.6, 0.54], [0.75, 0.68], [0.9, 0.82], [1, 0.94]
+    ];
+
+    function toX(v) { return pad.l + v * cw; }
+    function toY(v) { return pad.t + (1 - v) * ch; }
+
+    function drawCurve(pts, color) {
+      ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2.2; ctx.lineJoin = 'round';
+      pts.forEach(([x, y], i) => { i === 0 ? ctx.moveTo(toX(x), toY(y)) : ctx.lineTo(toX(x), toY(y)); });
+      ctx.stroke();
+    }
+    drawCurve(demand, '#5a96c7');
+    drawCurve(supply, '#b8882a');
+
+    // Equilibrium point at ~(0.46, 0.5)
+    const eq = { x: 0.455, y: 0.455 };
+    ctx.setLineDash([3, 3]); ctx.strokeStyle = '#ccc'; ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(toX(eq.x), toY(eq.y)); ctx.lineTo(toX(eq.x), toY(0));
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(toX(eq.x), toY(eq.y)); ctx.lineTo(pad.l, toY(eq.y));
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Equilibrium dot
+    ctx.beginPath();
+    ctx.arc(toX(eq.x), toY(eq.y), 5, 0, Math.PI * 2);
+    ctx.fillStyle = '#e2b95a'; ctx.fill();
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+
+    // Labels
+    ctx.fillStyle = '#5a96c7'; ctx.font = 'bold 10px DM Sans, sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText('D', toX(1) + 4, toY(demand[demand.length - 1][1]));
+    ctx.fillStyle = '#b8882a';
+    ctx.fillText('S', toX(1) + 4, toY(supply[supply.length - 1][1]));
+
+    ctx.fillStyle = '#3d4a5c'; ctx.font = '9px DM Sans, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('E*', toX(eq.x) + 14, toY(eq.y) - 7);
+  }
+
+  // Draw when tab 4 first becomes visible
+  setTimeout(() => { if (cur === 3) drawSD(); }, 100);
+</script>
+</body>
+</html>
